@@ -1,0 +1,149 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- Acció per obrir la llista de propietats -->
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">Propietats</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Vista de la llista de propietats -->
+    <record id="view_estate_property_list" model="ir.ui.view">
+        <field name="name">estate.property.list</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/> <!-- Nom -->
+                <field name="types"/> <!-- Tipus-->
+                <field name="code_postal"/> <!-- Codi postal -->
+                <field name="date_availability"/> <!-- Data de disponibilitat -->
+                <field name="selling_price_await"/> <!-- Preu de venda -->
+                <field name="user"/> <!-- Usuri -->
+                <field name="state"/> <!-- Estat -->
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista de cerca amb filtres personalitzats -->
+    <record id="estate_property_search_view" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/> <!-- Nom -->
+                <field name="types"/> <!-- Tipus -->
+                <field name="code_postal"/> <!-- Codi postal -->
+                <field name="selling_price_await"/> <!-- Preu de venda -->
+                <field name="state"/> <!-- Estat -->
+                <field name="date_availability"/> <!-- Data de disponibilitat -->
+                
+                <!-- Filtres per predeterminat -->
+                <filter name="filter_available" string="Disponibles" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/> <!-- Propietats disponibles -->
+                <filter name="filter_low_price" string="Baix preu" domain="[('selling_price_await', '&lt;', 100000)]"/> <!-- Propietats de baix preu -->
+                
+                <!-- Agrupaciós -->
+                <group string="Agrupar per">
+                    <filter name="group_by_type" string="Tipus" domain="[]" context="{'group_by': 'types'}"/> <!-- Agrupar per tipus -->
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Vista per les propietats -->
+    <record id="view_estate_property_form" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" nolabel="1" class="oe_highlight" style="font-size: 2em; font-weight: bold;"/> <!-- Nom destacat de la propietat -->
+                        
+                        <!-- Informació -->
+                        <group col="2">
+                            <field name="code_postal"/> <!-- Codi postal -->
+                            <field name="date_availability"/> <!-- Data de disponibilitat -->
+                            <field name="selling_price_await"/> <!-- Preu de venda -->
+                            <field name="state"/> <!-- Estat de la propietat -->
+                        </group>
+
+                        <!-- Propietat i responsable -->
+                        <group col="2">
+                            <field name="best_offer" readonly="1"/> <!-- Millor oferta -->
+                            <field name="types" string="Tipus de Propietat" options="{'no_create': True}"/> <!-- Tipus de propietat -->
+                            <field name="user" options="{'no_create': True}"/> <!-- Usuari -->
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <!-- Pàgina descripció -->
+                        <page string="Descripció">
+                            <group>
+                                <field name="description"/> <!-- Descripció -->
+                            </group>
+                        </page>
+
+                        <!-- Pàgina Característiques -->
+                        <page string="Característiques">
+                            <group>
+                                <field name="tags" widget="many2many_tags" options="{'no_create': True}"/> <!-- Etiquetes -->
+                                <field name="bedrooms"/> <!-- Nombre d'habitacions -->
+                                <field name="bathrooms"/> <!-- Nombre de banys -->
+                                <field name="area"/> <!-- Àrea de la propietat -->
+                                <field name="year_of_construction"/> <!-- Any de construcció -->
+                                <field name="energy_certificate"/> <!-- Certificat energètic -->
+                            </group>
+                        </page>
+
+                        <!-- Pàgina Característiques Clau -->
+                        <page string="Característiques Clau">
+                            <group>
+                                <field name="final_price" readonly="1"/> <!-- Preu final -->
+                                <field name="buyyer_id" readonly="1"/> <!-- Comprador -->
+                                <field name="price_m2" readonly="1"/> <!-- Preu per m2 -->
+                            </group>
+                        </page>
+
+                        <!-- Pàgina Característiques Addicionals -->
+                        <page string="Característiques Addicionals">
+                            <group>
+                                <field name="has_elevator"/>
+                                <field name="has_parking"/>
+                                <field name="renovated"/>
+                            </group>
+                        </page>
+
+                        <!-- Pàgina Ofertes -->
+                        <page string="Ofertes">
+                            <field name="offers">
+                                <list>
+                                    <field name="price"/> <!-- Preu de l'oferta -->
+                                    <field name="state"/> <!-- Estat de l'oferta -->
+                                    <field name="buyer_id"/> <!-- Comprador -->
+                                    <field name="comments"/> <!-- Comentaris -->
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Formulari d'ofertes -->
+    <record id="view_estate_property_offer_form" model="ir.ui.view">
+        <field name="name">estate.property.offer.form</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <form string="Oferta de Propietat">
+                <group>
+                    <field name="price"/> <!-- Preu de l'oferta -->
+                    <field name="state"/> <!-- Estat de l'oferta -->
+                    <field name="buyer_id"/> <!-- Comprador -->
+                    <field name="comments"/> <!-- Comentaris -->
+                </group>
+            </form>
+        </field>
+    </record>
+
+</odoo>

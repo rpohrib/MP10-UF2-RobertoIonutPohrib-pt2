@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- Menú principal de propietats immobiliàries -->
+    <menuitem id="estate_property_menu_root" name="Propietats Immobiliàries"/>
+
+    <!-- Submenú per als anuncis de propietats -->
+    <menuitem id="estate_property_menu" name="Anuncis" parent="estate_property_menu_root"/>
+
+    <!-- Acció associada al submenú d'anuncis -->
+    <menuitem id="estate_property_menu_action" name="Anuncis" parent="estate_property_menu" action="estate_property_action"/>
+
+    <!-- Finestra per als anuncis de propietats -->
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">Anuncis</field> <!-- Nom -->
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Menú per a la configuració de propietats immobiliàries -->
+    <menuitem id="estate_configuration_menu" name="Configuració" parent="estate_property_menu_root"/>
+
+    <!-- Finestra per a les etiquetes de propietats -->
+    <record id="estate_tag_action" model="ir.actions.act_window">
+        <field name="name">Etiquetes</field> <!-- Nom -->
+        <field name="res_model">estate.property.tag</field> <!-- Model de registre utilitzat -->
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Finestra per als tipus de propietats -->
+    <record id="estate_type_action" model="ir.actions.act_window">
+        <field name="name">Tipus</field> 
+        <field name="res_model">estate.property.type</field> <!-- Model de registre utilitzat -->
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Submenú per a les etiquetes de propietats -->
+    <menuitem id="estate_tag_menu" name="Etiquetes" parent="estate_configuration_menu" action="estate_tag_action"/>
+    <!-- Submenú per als tipus de propietats -->
+    <menuitem id="estate_type_menu" name="Tipus" parent="estate_configuration_menu" action="estate_type_action"/>
+</odoo>
